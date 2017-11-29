@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimuscale=1.0,maximuscale=1.0,user-scalable=no,minimal-ui" />
+  <link rel="stylesheet" href="style.css" />
+  <title>我的资料</title>
+</head>
+<body style="overflow-x:hidden;">
+  <div class="main" id="main">
+    <div v-show="!edit" v-cloak>
+      <ul class="list">
+        <li @click="toggle(1)">
+          <label for="">手机</label>
+          <div class="list-info">{{showPhone}}</div>
+        </li>
+        <li>
+          <label for="">昵称</label>
+          <div class="list-info">深海鱼</div>
+        </li>
+        <li>
+          <label for="">性别</label>
+          <div class="list-info"></div>
+          <span>未设置</span>
+        </li>
+        <li>
+          <label for="">生日</label>
+          <div class="list-info"></div>
+          <span>未设置</span>
+        </li>
+      </ul>
+      <div class="btn">退出登录</div>
+    </div>
+    <div class="translate" :class="{open: edit}">
+        <div class="input-wrap">
+          <input type="text" class="input" v-model="phone" placeholder="请输入手机">
+        </div>
+        <div class="input-wrap">
+          <input type="text" class="input" placeholder="请输入收到的验证码" v-model="code">
+          <a class="input-btn">获取验证码</a>
+        </div>
+        <div class="text-right">收不到？试试语音验证码</div>
+        <div class="btn btn-submit" @click="toggle(0)" :class="{disabled: !phone || !code}">提交</div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@2.5.9/dist/vue.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
