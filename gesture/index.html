@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>gesture</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="./gesture.js"></script>
+  <style>
+    div{background: #F00;height: 200px;width: 200px;}
+  </style>
+</head>
+<body>
+  <div id="aa"></div>
+  <script>
+var a = new GT('#aa').on('tap',function(){
+  console.log('tap')
+}).on('touch',function(){
+  console.log('touch')
+}).on('move',function(){
+  console.log('move')
+}).on('end',function(){
+  console.log('end')
+}).on("cancel",function(){
+  console.log("cancel")
+}).on('dbtap',function(){
+  console.log('double tap')
+}).on("longtap",function(){
+  console.log('longtap')
+}).on('slide',function(){
+  console.log('slide')
+}).on('swipe',function(){
+  console.log('swipe')
+}).on('swipeUp',function(){
+  console.log('swipeUp')
+}).on('swipeDown',function(){
+  console.log('swipeDown')
+}).on('swipeLeft',function(){
+  console.log('swipeLeft')
+}).on('swipeRight',function(){
+  console.log('swipeRight')
+}).on("swipeRight",function(params){
+  console.log(params)
+})
+  </script>
+</body>
+</html>
