@@ -75,7 +75,7 @@
 
 下面的内容重点放在`prototype`的实现，分别实现`_touch`,`_move`,`_end`和`_cancel`。
 
-#### 单手指事件和手势
+#### 3. 单手指事件和手势
 
 单手指事件和手势包括：`tap`,`dbtap`,`longtap`,`slide/move/drag`和`swipe`。
 
@@ -252,7 +252,7 @@ new GT('#target').on('tap',function(){
 ```
 
 
-#### 多手指手势
+#### 4. 多手指手势
 
 常见的多手指手势为缩放手势`pinch`和旋转手势`rotate`。
 
@@ -387,7 +387,7 @@ Gesture.prototype. _emit =  function(type){
 
 ```
 
-#### 完善细节
+#### 5. 完善细节
 
 + `touchcancel`**回调**
 
@@ -546,7 +546,7 @@ new GT(el)..on('slide',function(e,params){
 ```
 
 
-#### 最终结果
+#### 6. 最终结果
 
 你可以通过用手机扫描以下二维码查看结果
 
