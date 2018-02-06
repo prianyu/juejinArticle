@@ -1,4 +1,9 @@
-移动端已经为我们提供了`touchstart`,`touchmove`,`touchcancel`和`touchend`四个原生触摸事件。但一般情况下很少直接用到这几个事件，诸如长按事件等都需要自己去实现。不少开源的项目也实现了这些功能，如[zepto的Touch模块](http://zeptojs.com/#touch)以及[hammer.js](http://hammerjs.github.io/)。本文将一步讲解常见移动端事件和手势的实现思路和实现方法，封装一个简单的移动端手势库。
+移动端已经为我们提供了`touchstart`,`touchmove`,`touchcancel`和`touchend`四个原生触摸事件。但一般情况下很少直接用到这几个事件，诸如长按事件等都需要自己去实现。不少开源的项目也实现了这些功能，如[zepto的Touch模块](http://zeptojs.com/#touch)以及[hammer.js](http://hammerjs.github.io/)。本文将一步讲解常见移动端事件和手势的实现思路和实现方法，封装一个简单的移动端手势库。实现后的一个例子如下：
+
+你可以通过手机扫描二维码查看效果
+
+![](./images/qrcode.png)
+
 
 ### 常见的事件和手势
 
