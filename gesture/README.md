@@ -38,7 +38,7 @@
 #### 1. 基本的代码结构
 
   库的名称这里命名为**Gesture**,在`windows`暴露的名称为**GT**。以下为基本的代码结构
- 
+
 ```javascript
 ;(function(){
 	function Gesture(target){
@@ -120,7 +120,7 @@ _touch: function(e){
       var point = e.touches ? e.touches[0] : e;//获得触摸参数
       var now = Date.now(); //当前的时间
 	  //记录手指位置等参数
-      this.touch.startX = point.pageX; 
+      this.touch.startX = point.pageX;
       this.touch.startY = point.pageY;
       this.touch.startTime = now;
 	  //由于会有多次触摸的情况，单击事件和双击针对单次触摸，故先清空定时器
@@ -138,7 +138,7 @@ _touch: function(e){
           e.preventDefault();
         },800);
 		//按照上面分析的思路计算当前是否处于双击状态，ABS为全局定义的变量 var ABS = Math.abs;
-        this.doubleTap = this.pretouch.time && now - this.pretouch.time < 300 && ABS(this.touch.startX -this.pretouch.startX) < 30  && ABS(this.touch.startY - this.pretouch.startY) < 30 && ABS(this.touch.startTime - this.pretouch.time) < 300; 
+        this.doubleTap = this.pretouch.time && now - this.pretouch.time < 300 && ABS(this.touch.startX -this.pretouch.startX) < 30  && ABS(this.touch.startY - this.pretouch.startY) < 30 && ABS(this.touch.startTime - this.pretouch.time) < 300;
         this.pretouch = {//更新上一个触摸的信息为当前，供下一次触摸使用
           startX : this.touch.startX,
           startY : this.touch.startY,
@@ -155,7 +155,7 @@ _touch: function(e){
           var diffX = point.pageX - this.touch.startX,
               diffY = point.pageY - this.touch.startY；//与手指刚触摸时的相对坐标
 			  this.params.diffY = diffY;
-              this.params.diffX = diffX; 
+              this.params.diffX = diffX;
           if(this.movetouch.x) {//记录移动过程中与上一次移动的相对坐标
             this.params.deltaX = point.pageX - this.movetouch.x;
             this.params.deltaY = point.pageY - this.movetouch.y;
@@ -278,7 +278,7 @@ new GT('#target').on('tap',function(){
  **（3）计算两个向量夹角的方向（向量的外积）**
 
  几何定义： ![](./images/cha0.jpg)
- 
+
  代数定义：
 
  ![](./images/cha1.jpg)
@@ -430,7 +430,7 @@ _end: function(e) {
 在查找资料的过程中，看到了另外一个手势库**AlloyFinger**,是腾讯出品。人家的库是经过了大量的实践的，因此查看了下源码做了下对比，发现实现的思路大同小异，但其除了支持本文实现的手势外还额外提供了其他的手势，对比了下主要有以下不同：
 
 + 事件的回调可以通过实例化时参数传入，也可以用`on`方法后续绑定
-+ 提供了写在对应回调的`off`方法和销毁对象的方法`destroy`
++ 提供了卸载对应回调的`off`方法和销毁对象的方法`destroy`
 + 不支持链式调用
 + 不支持事件委托
 + 手势变化的各种参数通过扩展在原生的`event`对象上，可操作性比较高（但这似乎有好有坏？）
@@ -521,7 +521,7 @@ new GT('#target').set({longtapTime: 700}).tap(function(){})
 
 + **解决冲突**
 
-通过具体实例测试后发现在手指滑动的过程（包括`move`,`slide`,`rotate`,`pinch`等）会和浏览器的窗口滚动手势冲突，一般情况下用`e.preventDefault()`来阻止浏览器的默认行为。库中通过`_emit`方法执行回调时`params.event`为原生的事件对象，但是用`params.event.preventDefault()`来阻止默认行为是不可行的。因此，需要调整`_emit`方法，使其接收多一个原生事件对象的参数，执行时最为回调参数范围，供使用时选择性的处理一些默认行为。修改后如下: 
+通过具体实例测试后发现在手指滑动的过程（包括`move`,`slide`,`rotate`,`pinch`等）会和浏览器的窗口滚动手势冲突，一般情况下用`e.preventDefault()`来阻止浏览器的默认行为。库中通过`_emit`方法执行回调时`params.event`为原生的事件对象，但是用`params.event.preventDefault()`来阻止默认行为是不可行的。因此，需要调整`_emit`方法，使其接收多一个原生事件对象的参数，执行时最为回调参数范围，供使用时选择性的处理一些默认行为。修改后如下:
 
 ```javascript
 _emit: function(type,e){
