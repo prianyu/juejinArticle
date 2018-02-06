@@ -121,6 +121,7 @@ _touch: function(e){
 	  //由于会有多次触摸的情况，单击事件和双击针对单次触摸，故先清空定时器
       this.longTapTimeout && clearTimeout(this.longTapTimeout);
       this.tapTimeout && clearTimeout(this.tapTimeout);
+	  this.doubleTap = false;
       this._emit('touch'); //执行原生的touchstart回调，_emit为执行的方法，后面定义
       if(e.touches.length > 1) {
         //这里为处理多个手指触摸的情况
@@ -173,7 +174,7 @@ _touch: function(e){
       var deltaX = ~~((this.movetouch.x || 0)- this.touch.startX),
           deltaY = ~~((this.movetouch.y || 0) - this.touch.startY);
 	  var direction = '';
-      if(this.movetouch.x !== null && ABS(deltaX) > 30 || this.movetouch.y !== null && ABS(deltaY) > 30) {//swipe手势
+      if(this.movetouch.x && (ABS(deltaX) > 30 || this.movetouch.y !== null && ABS(deltaY) > 30)) {//swipe手势
         if(ABS(deltaX) < ABS(deltaY)) {
           if(deltaY < 0){//上划
             this._emit('swipeUp')
@@ -411,10 +412,6 @@ _init: function() {
   this.touch = {};
   this.movetouch = {}
   this.params = {zoom: 1,deltaX: 0,deltaY: 0,diffX: 0,diffY:0,angle: 0,direction: ''};
-  this.longTapTimeout && clearTimeout(this.longTapTimeout);
-  this.longTapTimeout = null;
-  this.tapTimeout = null;
-  this.doubleTap = false;
 }
 _end: function(e) {
  //...
@@ -492,7 +489,7 @@ destroy: function() {
 
 ```
 
-+ ** 增加配置 **
++ **增加配置**
 
 实际使用中，可能对默认的参数有特殊的要求，比如，长按定义的事件是1000ms而不是800ms，执行swipe移动的距离是50px而不是30，故针对几个特殊的值暴露一个设置接口，同时支持链式调用。逻辑中对应的值则改为对应的参数。
 
@@ -507,3 +504,56 @@ set: function(obj) {
 }
 
 ```
+
+使用方法:
+
+```javascript
+
+new GT('#target').set({longtapTime: 700}).tap(function(){})
+
+```
+
+
++ **解决冲突**
+
+通过具体实例测试后发现在手指滑动的过程（包括`move`,`slide`,`rotate`,`pinch`等）会和浏览器的窗口滚动手势冲突，一般情况下用`e.preventDefault()`来阻止浏览器的默认行为。库中通过`_emit`方法执行回调时`params.event`为原生的事件对象，但是用`params.event.preventDefault()`来阻止默认行为是不可行的。因此，需要调整`_emit`方法，使其接收多一个原生事件对象的参数，执行时最为回调参数范围，供使用时选择性的处理一些默认行为。修改后如下: 
+
+```javascript
+_emit: function(type,e){
+  !this.handles[type] && (this.handles[type] = []);
+  if(isTarget(this.e,this.selector) || !this.selector) {
+    for(var i = 0,len = this.handles[type].length; i < len; i++) {
+      typeof this.handles[type][i] === 'function' && this.handles[type][i](e,this.params);
+    }
+  }
+  return true;
+}
+
+```
+
+响应的库中的调用需要改为`this._emit('longtap',e)`的形式。
+
+修改后在使用时可以通过`e.preventDefault()`来阻止默认行为，例如
+
+```javascript
+
+new GT(el)..on('slide',function(e,params){
+  el.translateX += params.deltaX;
+  el.translateY += params.deltaY;
+  e.preventDefault()
+})
+
+```
+
+
+#### 最终结果
+
+你可以通过用手机扫描以下二维码查看结果
+
+![](./images/qrcode.png)
+
+所有的源码你可以[点击这里查看](https://github.com/prianyu/gesture)
+
+
+> **所有的问题解决思路和代码均供参考和探讨学习，欢迎指出存在的问题和可以完善的地方。**
+
