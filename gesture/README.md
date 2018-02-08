@@ -1,6 +1,14 @@
-移动端已经为我们提供了`touchstart`,`touchmove`,`touchcancel`和`touchend`四个原生触摸事件。但一般情况下很少直接用到这几个事件，诸如长按事件等都需要自己去实现。不少开源的项目也实现了这些功能，如[zepto的Touch模块](http://zeptojs.com/#touch)以及[hammer.js](http://hammerjs.github.io/)。本文将一步讲解常见移动端事件和手势的实现思路和实现方法，封装一个简单的移动端手势库。实现后的一个例子如下：
+移动端已经为我们提供了`touchstart`,`touchmove`,`touchcancel`和`touchend`四个原生触摸事件。但一般情况下很少直接用到这几个事件，诸如长按事件等都需要自己去实现。不少开源的项目也实现了这些功能，如[zepto的Touch模块](http://zeptojs.com/#touch)以及[hammer.js](http://hammerjs.github.io/)。本文将一步讲解常见移动端事件和手势的实现思路和实现方法，封装一个简单的移动端手势库。实现后的几个例子效果如下：
 
-你可以通过手机扫描二维码查看效果
+![](./images/demo1.gif)
+
+[手机点击此处查看](https://prianyu.github.io/gesture/)
+
+![](./images/demo2.gif)
+
+[手机点击此处查看](https://prianyu.github.io/gesture/list.html)
+
+查看缩放和旋转，你可以通过手机扫描二维码或者[点击此处]([手机点击此处查看](https://prianyu.github.io/gesture/)查看效果
 
 ![](./images/qrcode.png)
 
@@ -203,11 +211,14 @@ _touch: function(e){
         if(!this.doubleTap && timestamp - this.touch.startTime < 300) {//单次点击300ms内离开，触发点击事件
           this.tapTimeout = setTimeout(function(){
             self._emit('tap')
+            self._emit('finish');//执行完所有的操作回调
           },300)
-        }
-        if(this.doubleTap) {//300ms内再次点击且离开，则触发双击事件，不触发单击事件
+        } else if(this.doubleTap) {//300ms内再次点击且离开，则触发双击事件，不触发单击事件
           this._emit('dbtap');
-          this.tapTimeout && clearTimeout(this.tapTimeout)
+          this.tapTimeout && clearTimeout(this.tapTimeout);
+          this._emit('finish');
+        } else {
+          this._emit('finish')
         }
       }
       this._emit('end'); //原生的touchend事件
@@ -553,7 +564,17 @@ new GT(el)..on('slide',function(e,params){
 
 #### 6. 最终结果
 
-你可以通过用手机扫描以下二维码查看结果
+最终效果如文章开头展示，可以点击以下链接查看
+
+![](./images/demo1.gif)
+
+[手机点击此处查看综合实例](https://prianyu.github.io/gesture/)
+
+![](./images/demo2.gif)
+
+[手机点击此处查看聊天列表例子](https://prianyu.github.io/gesture/list.html)
+
+查看缩放和旋转，你可以通过手机扫描二维码或者点击综合实例链接查看效果
 
 ![](./images/qrcode.png)
 
