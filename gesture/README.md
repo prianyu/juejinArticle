@@ -1,3 +1,5 @@
+# 一步步打造一个移动端手势库
+
 移动端已经为我们提供了`touchstart`,`touchmove`,`touchcancel`和`touchend`四个原生触摸事件。但一般情况下很少直接用到这几个事件，诸如长按事件等都需要自己去实现。不少开源的项目也实现了这些功能，如[zepto的Touch模块](http://zeptojs.com/#touch)以及[hammer.js](http://hammerjs.github.io/)。本文将一步讲解常见移动端事件和手势的实现思路和实现方法，封装一个简单的移动端手势库。实现后的几个例子效果如下：
 
 ![](./images/demo1.gif)
@@ -578,7 +580,7 @@ new GT(el)..on('slide',function(e,params){
 
 ![](./images/qrcode.png)
 
-所有的源码你可以[点击这里查看](https://github.com/prianyu/gesture)
+所有的源码以及库的使用文档，你可以[点击这里查看](https://github.com/prianyu/gesture)
 
 
 > **所有的问题解决思路和代码均供参考和探讨学习，欢迎指出存在的问题和可以完善的地方。**
